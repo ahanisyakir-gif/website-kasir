@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/kasir.css">
+    <title>Document</title>
+</head>
+<body>
+    <!-- HALAMAN LOGIN -->
+<div id="loginPage" class="login-page">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            🛒
+        </div>
+
+        <h1>KasirKu</h1>
+
+        <p class="login-subtitle">
+            Silakan masuk untuk melanjutkan
+        </p>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <label>Username</label>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Masukkan username"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Masukkan password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-btn">
+                🔐 Masuk
+            </button>
+
+            <p id="loginMessage"></p>
+
+        </form>
+
+    </div>
+
+</div>
+<div id="app">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span>🛒</span>
+            KasirKu
+        </div>
+
+        <nav>
+           <nav class="sidebar-nav">
+
+    <a href="#" class="nav-link active"
+       onclick="showPage('dashboard', this)">
+        🏠
+        <span>Dashboard</span>
+        
+    </a>
+
+    <a href="#" class="nav-link"
+       onclick="showPage('produk', this)">
+        🛍️
+        <span>Produk</span>
+    </a>
+
+    <a href="#" class="nav-link"
+       onclick="showPage('transaksi', this)">
+        📦
+        <span>Transaksi</span>
+    </a>
+
+    <a href="#" class="nav-link"
+       onclick="showPage('laporan', this)">
+        📊
+        <span>Laporan</span>
+    </a>
+
+    <a href="#" class="nav-link"
+       onclick="showPage('pengaturan', this)">
+        ⚙️
+        <span>Pengaturan</span>
+    </a>
+
+</nav>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <p>Kasir</p>
+            <strong>Admin</strong>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="topbar">
+
+            <div>
+                <h1>Kasir</h1>
+                <p>Kelola transaksi penjualan</p>
+            </div>
+
+            <div class="date">
+                📅 <span id="tanggal"></span>
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content" id="dashboard">
+
+            <!-- BAGIAN PRODUK -->
+            <div class="products-section">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Daftar Produk</h2>
+                        <p>Pilih produk untuk ditambahkan</p>
+                    </div>
+
+                    <div class="search-box">
+                        🔍
+                        <input
+                            type="text"
+                            id="search"
+                            placeholder="Cari produk..."
+                        >
+                    </div>
+
+                </div>
+
+
+                <!-- KATEGORI -->
+                <div class="categories">
+
+                    <button class="category active"
+                            onclick="filterCategory('Semua', this)">
+                        Semua
+                    </button>
+
+                    <button class="category"
+                            onclick="filterCategory('Makanan', this)">
+                        🍔 Makanan
+                    </button>
+
+                    <button class="category"
+                            onclick="filterCategory('Minuman', this)">
+                        🥤 Minuman
+                    </button>
+
+                    <button class="category"
+                            onclick="filterCategory('Snack', this)">
+                        🍪 Snack
+                    </button>
+
+                </div>
+
+
+                <!-- PRODUK -->
+                <div class="product-grid" id="productGrid">
+
+                </div>
+
+            </div>
+
+
+            <!-- TRANSAKSI -->
+            <div class="cart-section">
+
+                <div class="cart-header">
+
+                    <div>
+                        <h2>🛒 Pesanan</h2>
+                        <p id="jumlahItem">0 item</p>
+                    </div>
+
+                    <button class="clear-btn"
+                            onclick="clearCart()">
+                        Hapus Semua
+                    </button>
+
+                </div>
+
+
+                <!-- CART -->
+                <div class="cart-items" id="cartItems">
+
+                    <div class="empty-cart">
+
+                        <div class="empty-icon">
+                            🛒
+                        </div>
+
+                        <h3>Keranjang Kosong</h3>
+
+                        <p>
+                            Pilih produk untuk memulai transaksi
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL -->
+                <div class="summary">
+
+                    <div>
+                        <span>Subtotal</span>
+                        <strong id="subtotal">
+                            Rp 0
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Diskon</span>
+                        <strong id="discount">
+                            Rp 0
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Pajak (10%)</span>
+                        <strong id="tax">
+                            Rp 0
+                        </strong>
+                    </div>
+
+                    <hr>
+
+                    <div class="total">
+
+                        <span>Total</span>
+
+                        <strong id="total">
+                            Rp 0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PAYMENT -->
+                <div class="payment">
+
+                    <label>
+                        Uang Pembayaran
+                    </label>
+
+                    <input
+                        type="number"
+                        id="payment"
+                        placeholder="Masukkan jumlah uang"
+                    >
+
+                    <div class="change">
+
+                        <span>Kembalian</span>
+
+                        <strong id="change">
+                            Rp 0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="checkout-btn"
+                    onclick="checkout()">
+
+                    💳 Bayar Sekarang
+
+                </button>
+
+            </div>
+
+        </section>
+        <!-- HALAMAN PRODUK -->
+<section class="page" id="produk">
+    <h2>🛍️ Produk</h2>
+    <p>Kelola produk yang tersedia di toko.</p>
+
+    <button onclick="alert('Fitur tambah produk')">
+        + Tambah Produk
+    </button>
+</section>
+
+
+<!-- HALAMAN TRANSAKSI -->
+<section class="page" id="transaksi">
+    <h2>📦 Transaksi</h2>
+    <p>Daftar transaksi penjualan akan ditampilkan di sini.</p>
+</section>
+
+
+<!-- HALAMAN LAPORAN -->
+<section class="page" id="laporan">
+    <h2>📊 Laporan</h2>
+    <p>Laporan penjualan akan ditampilkan di sini.</p>
+</section>
+
+
+<!-- HALAMAN PENGATURAN -->
+<section class="page" id="pengaturan">
+    <h2>⚙️ Pengaturan</h2>
+    <p>Pengaturan aplikasi kasir.</p>
+</section>
+
+    </main>
+    </div>
+
+
+    <!-- MODAL STRUK -->
+    <div class="modal" id="receiptModal">
+
+        <div class="receipt">
+
+            <button
+                class="close"
+                onclick="closeReceipt()">
+                ×
+            </button>
+
+            <div id="receiptContent"></div>
+
+            <button
+                class="print-btn"
+                onclick="window.print()">
+                🖨️ Cetak Struk
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        // ================================
+// DATA PRODUK
+// ================================
+
+const products = [
+
+    {
+        id: 1,
+        name: "Nasi Goreng",
+        category: "Makanan",
+        price: 15000,
+        icon: "🍛"
+    },
+
+    {
+        id: 2,
+        name: "Mie Goreng",
+        category: "Makanan",
+        price: 12000,
+        icon: "🍜"
+    },
+
+    {
+        id: 3,
+        name: "Ayam Geprek",
+        category: "Makanan",
+        price: 18000,
+        icon: "🍗"
+    },
+
+    {
+        id: 4,
+        name: "Es Teh",
+        category: "Minuman",
+        price: 5000,
+        icon: "🧋"
+    },
+
+    {
+        id: 5,
+        name: "Kopi",
+        category: "Minuman",
+        price: 10000,
+        icon: "☕"
+    },
+
+    {
+        id: 6,
+        name: "Jus Jeruk",
+        category: "Minuman",
+        price: 8000,
+        icon: "🍊"
+    },
+
+    {
+        id: 7,
+        name: "Keripik",
+        category: "Snack",
+        price: 7000,
+        icon: "🍪"
+    },
+
+    {
+        id: 8,
+        name: "Donat",
+        category: "Snack",
+        price: 6000,
+        icon: "🍩"
+    },
+
+    {
+        id: 9,
+        name: "Kentang Goreng",
+        category: "Snack",
+        price: 10000,
+        icon: "🍟"
+    }
+
+];
+
+
+// ================================
+// CART
+// ================================
+
+let cart = [];
+
+
+// ================================
+// FORMAT RUPIAH
+// ================================
+
+function rupiah(number) {
+
+    return "Rp " +
+        number.toLocaleString("id-ID");
+
+}
+
+
+// ================================
+// TAMPILKAN PRODUK
+// ================================
+
+function displayProducts(list = products) {
+
+    const productGrid =
+        document.getElementById("productGrid");
+
+    productGrid.innerHTML = "";
+
+    if (list.length === 0) {
+
+        productGrid.innerHTML = `
+            <p>
+                Produk tidak ditemukan.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    list.forEach(product => {
+
+        productGrid.innerHTML += `
+
+            <div
+                class="product-card"
+                onclick="addToCart(${product.id})"
+            >
+
+                <div class="product-image">
+                    ${product.icon}
+                </div>
+
+                <h3>
+                    ${product.name}
+                </h3>
+
+                <p class="product-category">
+                    ${product.category}
+                </p>
+
+                <div class="product-bottom">
+
+                    <span class="price">
+                        ${rupiah(product.price)}
+                    </span>
+
+                    <button
+                        class="add-btn"
+                        onclick="event.stopPropagation(); addToCart(${product.id})"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+
+// ================================
+// TAMBAH KE CART
+// ================================
+
+function addToCart(productId) {
+
+    const product =
+        products.find(p => p.id === productId);
+
+
+    const existing =
+        cart.find(item => item.id === productId);
+
+
+    if (existing) {
+
+        existing.quantity++;
+
+    } else {
+
+        cart.push({
+
+            ...product,
+
+            quantity: 1
+
+        });
+
+    }
+
+
+    updateCart();
+
+}
+
+
+// ================================
+// UPDATE CART
+// ================================
+
+function updateCart() {
+
+    const cartItems =
+        document.getElementById("cartItems");
+
+    const jumlahItem =
+        document.getElementById("jumlahItem");
+
+
+    if (cart.length === 0) {
+
+        cartItems.innerHTML = `
+
+            <div class="empty-cart">
+
+                <div class="empty-icon">
+                    🛒
+                </div>
+
+                <h3>
+                    Keranjang Kosong
+                </h3>
+
+                <p>
+                    Pilih produk untuk memulai transaksi
+                </p>
+
+            </div>
+
+        `;
+
+    } else {
+
+        cartItems.innerHTML = "";
+
+
+        cart.forEach(item => {
+
+            cartItems.innerHTML += `
+
+                <div class="cart-item">
+
+                    <div class="item-info">
+
+                        <div class="item-icon">
+                            ${item.icon}
+                        </div>
+
+                        <div>
+
+                            <div class="item-name">
+                                ${item.name}
+                            </div>
+
+                            <div class="item-price">
+                                ${rupiah(item.price)}
+                            </div>
+
+                            <div class="quantity">
+
+                                <button
+                                    onclick="changeQuantity(
+                                        ${item.id},
+                                        -1
+                                    )"
+                                >
+                                    -
+                                </button>
+
+                                <span>
+                                    ${item.quantity}
+                                </span>
+
+                                <button
+                                    onclick="changeQuantity(
+                                        ${item.id},
+                                        1
+                                    )"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            ${rupiah(
+                                item.price *
+                                item.quantity
+                            )}
+                        </strong>
+
+                        <button
+                            class="remove-btn"
+                            onclick="removeItem(${item.id})"
+                        >
+                            🗑️
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+
+
+    const totalItems =
+        cart.reduce(
+            (sum, item) =>
+                sum + item.quantity,
+            0
+        );
+
+
+    jumlahItem.textContent =
+        totalItems + " item";
+
+
+    calculateTotal();
+
+}
+
+
+// ================================
+// UBAH JUMLAH
+// ================================
+
+function changeQuantity(id, amount) {
+
+    const item =
+        cart.find(item => item.id === id);
+
+
+    if (!item) return;
+
+
+    item.quantity += amount;
+
+
+    if (item.quantity <= 0) {
+
+        cart =
+            cart.filter(
+                item => item.id !== id
+            );
+
+    }
+
+
+    updateCart();
+
+}
+
+
+// ================================
+// HAPUS ITEM
+// ================================
+
+function removeItem(id) {
+
+    cart =
+        cart.filter(
+            item => item.id !== id
+        );
+
+
+    updateCart();
+
+}
+
+
+// ================================
+// HAPUS SEMUA
+// ================================
+
+function clearCart() {
+
+    if (cart.length === 0) return;
+
+
+    const confirmDelete =
+        confirm(
+            "Hapus semua produk dari keranjang?"
+        );
+
+
+    if (confirmDelete) {
+
+        cart = [];
+
+        updateCart();
+
+        document.getElementById("payment").value = "";
+
+    }
+
+}
+
+
+// ================================
+// HITUNG TOTAL
+// ================================
+
+function calculateTotal() {
+
+    const subtotal =
+        cart.reduce(
+            (sum, item) =>
+                sum +
+                item.price *
+                item.quantity,
+            0
+        );
+
+
+    // Diskon
+    let discount = 0;
+
+
+    // Contoh:
+    // Jika belanja >= 100.000
+    // mendapatkan diskon 5%
+
+    if (subtotal >= 100000) {
+
+        discount =
+            subtotal * 0.05;
+
+    }
+
+
+    const afterDiscount =
+        subtotal - discount;
+
+
+    // Pajak 10%
+
+    const tax =
+        afterDiscount * 0.10;
+
+
+    const total =
+        afterDiscount + tax;
+
+
+    document.getElementById("subtotal")
+        .textContent =
+        rupiah(subtotal);
+
+
+    document.getElementById("discount")
+        .textContent =
+        rupiah(discount);
+
+
+    document.getElementById("tax")
+        .textContent =
+        rupiah(tax);
+
+
+    document.getElementById("total")
+        .textContent =
+        rupiah(total);
+
+
+    calculateChange(total);
+
+}
+
+
+// ================================
+// HITUNG KEMBALIAN
+// ================================
+
+function calculateChange(total) {
+
+    const payment =
+        Number(
+            document.getElementById("payment").value
+        );
+
+
+    const change =
+        payment - total;
+
+
+    const changeElement =
+        document.getElementById("change");
+
+
+    if (payment <= 0) {
+
+        changeElement.textContent =
+            "Rp 0";
+
+        return;
+
+    }
+
+
+    if (change < 0) {
+
+        changeElement.textContent =
+            "Kurang " +
+            rupiah(Math.abs(change));
+
+        changeElement.style.color =
+            "#dc2626";
+
+    } else {
+
+        changeElement.textContent =
+            rupiah(change);
+
+        changeElement.style.color =
+            "#16a34a";
+
+    }
+
+}
+
+
+// ================================
+// PEMBAYARAN
+// ================================
+
+document
+    .getElementById("payment")
+    .addEventListener(
+        "input",
+        function () {
+
+            const totalText =
+                document.getElementById(
+                    "total"
+                ).textContent;
+
+
+            const total =
+                Number(
+                    totalText
+                        .replace("Rp ", "")
+                        .replace(/\./g, "")
+                );
+
+
+            calculateChange(total);
+
+        }
+    );
+
+
+// ================================
+// CHECKOUT
+// ================================
+
+function checkout() {
+
+    if (cart.length === 0) {
+
+        alert(
+            "Keranjang masih kosong!"
+        );
+
+        return;
+
+    }
+
+
+    const totalText =
+        document.getElementById(
+            "total"
+        ).textContent;
+
+
+    const total =
+        Number(
+            totalText
+                .replace("Rp ", "")
+                .replace(/\./g, "")
+        );
+
+
+    const payment =
+        Number(
+            document.getElementById(
+                "payment"
+            ).value
+        );
+
+
+    if (payment <= 0) {
+
+        alert(
+            "Masukkan uang pembayaran!"
+        );
+
+        return;
+
+    }
+
+
+    if (payment < total) {
+
+        alert(
+            "Uang pembayaran belum cukup!"
+        );
+
+        return;
+
+    }
+
+
+    const change =
+        payment - total;
+
+
+    showReceipt(
+        total,
+        payment,
+        change
+    );
+
+}
+
+
+// ================================
+// STRUK
+// ================================
+
+function showReceipt(
+    total,
+    payment,
+    change
+) {
+
+    const receiptContent =
+        document.getElementById(
+            "receiptContent"
+        );
+
+
+    let itemsHTML = "";
+
+
+    cart.forEach(item => {
+
+        itemsHTML += `
+
+            <div class="receipt-row">
+
+                <span>
+                    ${item.name}
+                    x${item.quantity}
+                </span>
+
+                <span>
+                    ${rupiah(
+                        item.price *
+                        item.quantity
+                    )}
+                </span>
+
+            </div>
+
+        `;
+
+    });
+
+
+    receiptContent.innerHTML = `
+
+        <div class="receipt-title">
+
+            <h2>
+                🛒 KasirKu
+            </h2>
+
+            <p>
+                Struk Pembelian
+            </p>
+
+        </div>
+
+
+        ${itemsHTML}
+
+
+        <div class="receipt-row receipt-total">
+
+            <span>
+                Total
+            </span>
+
+            <span>
+                ${rupiah(total)}
+            </span>
+
+        </div>
+
+
+        <div class="receipt-row">
+
+            <span>
+                Dibayar
+            </span>
+
+            <span>
+                ${rupiah(payment)}
+            </span>
+
+        </div>
+
+
+        <div class="receipt-row">
+
+            <span>
+                Kembalian
+            </span>
+
+            <span>
+                ${rupiah(change)}
+            </span>
+
+        </div>
+
+
+        <p style="
+            text-align:center;
+            margin-top:20px;
+            color:#777;
+        ">
+            Terima kasih telah berbelanja ❤️
+        </p>
+
+    `;
+
+
+    document.getElementById(
+        "receiptModal"
+    ).style.display = "flex";
+
+}
+
+
+// ================================
+// TUTUP STRUK
+// ================================
+
+function closeReceipt() {
+
+    document.getElementById(
+        "receiptModal"
+    ).style.display = "none";
+
+}
+
+
+// ================================
+// SEARCH
+// ================================
+
+document
+    .getElementById("search")
+    .addEventListener(
+        "input",
+        function () {
+
+            const keyword =
+                this.value.toLowerCase();
+
+
+            const filtered =
+                products.filter(
+                    product =>
+                        product.name
+                            .toLowerCase()
+                            .includes(keyword)
+                );
+
+
+            displayProducts(filtered);
+
+        }
+    );
+
+
+// ================================
+// FILTER CATEGORY
+// ================================
+
+function filterCategory(
+    category,
+    button
+) {
+
+    document
+        .querySelectorAll(".category")
+        .forEach(btn => {
+
+            btn.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    button.classList.add("active");
+
+
+    if (category === "Semua") {
+
+        displayProducts(products);
+
+    } else {
+
+        const filtered =
+            products.filter(
+                product =>
+                    product.category ===
+                    category
+            );
+
+
+        displayProducts(filtered);
+
+    }
+
+}
+
+
+// ================================
+// TANGGAL
+// ================================
+
+function showDate() {
+
+    const now = new Date();
+
+
+    const options = {
+
+        weekday: "long",
+
+        year: "numeric",
+
+        month: "long",
+
+        day: "numeric"
+
+    };
+
+
+    document.getElementById(
+        "tanggal"
+    ).textContent =
+        now.toLocaleDateString(
+            "id-ID",
+            options
+        );
+
+}
+
+
+// ================================
+// JALANKAN PROGRAM
+// ================================
+
+displayProducts();
+
+showDate();
+
+updateCart();
+function showPage(pageId, menu) {
+
+    // Sembunyikan dashboard
+    document.getElementById("dashboard").style.display = "none";
+
+    // Sembunyikan semua halaman
+    document.querySelectorAll(".page").forEach(page => {
+        page.style.display = "none";
+    });
+
+
+    // Tampilkan halaman yang dipilih
+    document.getElementById(pageId).style.display = "block";
+
+
+    // Hapus active dari semua menu
+    document.querySelectorAll(".sidebar nav a").forEach(link => {
+        link.classList.remove("active");
+    });
+
+
+    // Berikan active ke menu yang diklik
+    menu.classList.add("active");
+}
+// ================================
+// LOGIN
+// ================================
+
+const loginForm =
+    document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const username =
+        document.getElementById("username").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    const message =
+        document.getElementById("loginMessage");
+
+
+    // Username dan password sementara
+    if (
+        username === "admin" &&
+        password === "12345"
+    ) {
+
+        // Sembunyikan login
+        document.getElementById(
+            "loginPage"
+        ).style.display = "none";
+
+
+        // Tampilkan aplikasi
+        document.getElementById(
+            "app"
+        ).style.display = "block";
+
+
+        message.textContent = "";
+
+    } else {
+
+        message.textContent =
+            "❌ Username atau password salah";
+
+        message.style.color =
+            "#dc2626";
+
+    }
+
+});
+    </script>
+</body>
+</html>
